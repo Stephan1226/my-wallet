@@ -2,8 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export async function addTransaction(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
   const title = formData.get("title") as string;
   const amount = parseFloat(formData.get("amount") as string);
   const category = formData.get("category") as string;
@@ -15,6 +21,7 @@ export async function addTransaction(formData: FormData) {
 
   await prisma.transaction.create({
     data: {
+      userId: session.user.id,
       title,
       amount,
       category,
@@ -27,8 +34,24 @@ export async function addTransaction(formData: FormData) {
 }
 
 export async function deleteTransaction(id: number) {
-  await prisma.transaction.delete({
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  // Ensure user owns the transaction
+  const transaction = await prisma.transaction.findUnique({
     where: { id },
+  });
+
+  if (!transaction || transaction.userId !== session.user.id) {
+    throw new Error("Unauthorized or not found");
+  }
+
+  await prisma.transaction.delete({
+    where: {
+      id,
+    },
   });
 
   revalidatePath("/");

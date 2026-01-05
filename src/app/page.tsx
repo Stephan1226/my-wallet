@@ -2,19 +2,27 @@ import { prisma } from "@/lib/prisma";
 import { TransactionForm } from "./components/TransactionForm";
 import { TransactionItem } from "./components/TransactionItem";
 import { DashboardStats } from "./components/DashboardStats";
+import { auth, signOut } from "@/auth";
+import { Button } from "./components/Button"; // Importing Button
 
 async function getTransactions() {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+  
   const transactions = await prisma.transaction.findMany({
+    where: {
+      userId: session.user.id
+    },
     orderBy: {
       date: "desc",
     },
   });
+
   return transactions;
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
+  const session = await auth();
   const transactions = await getTransactions();
   
   const totalAssets = transactions
@@ -29,11 +37,25 @@ export default async function Home() {
 
   return (
     <main className="container">
-      <header style={{ marginBottom: "32px", textAlign: "center" }}>
+      <header style={{ marginBottom: "32px", textAlign: "center", position: 'relative' }}>
         <h1 style={{ fontWeight: 800, fontSize: "2rem", letterSpacing: "-1px" }}>
           Shadow <span style={{ color: "var(--color-primary)" }}>Wallet</span>
         </h1>
+        {session?.user && (
+          <form action={async () => {
+            'use server';
+            await signOut();
+          }} style={{ position: 'absolute', right: 0, top: 0 }}>
+             <button type="submit" style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: '0.8rem' }}>
+               로그아웃
+             </button>
+          </form>
+        )}
       </header>
+
+      <div style={{ marginBottom: '20px', fontSize: '0.9rem', color: '#888', textAlign: 'center' }}>
+        환영합니다, {session?.user?.name || session?.user?.email}님
+      </div>
 
       <DashboardStats netMoney={netMoney} totalAssets={totalAssets} totalDebt={totalDebt} />
 
