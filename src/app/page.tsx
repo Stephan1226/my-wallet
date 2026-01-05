@@ -4,6 +4,7 @@ import { TransactionItem } from "./components/TransactionItem";
 import { DashboardStats } from "./components/DashboardStats";
 import { auth, signOut } from "@/auth";
 import { Button } from "./components/Button"; // Importing Button
+import { format } from "date-fns";
 
 async function getTransactions() {
   const session = await auth();
@@ -70,7 +71,7 @@ export default async function Home() {
         ) : (
           <div className="list">
             {transactions.map((t: { id: number; title: string; amount: number; category: string; type: string; date: Date }) => (
-              <TransactionItem key={t.id} transaction={{ ...t, date: t.date.toISOString() }} />
+              <TransactionItem key={t.id} transaction={{ ...t, date: format(t.date, "MMM d, yyyy") }} />
             ))}
           </div>
         )}

@@ -12,9 +12,16 @@ export function TransactionForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function action(formData: FormData) {
+    if (isPending) return;
+    
     startTransition(async () => {
-      await addTransaction(formData);
-      formRef.current?.reset();
+      try {
+        await addTransaction(formData);
+        formRef.current?.reset();
+      } catch (error) {
+        console.error("Failed to add transaction:", error);
+        alert("Failed to add transaction. Please try again.");
+      }
     });
   }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
 import { Trash2 } from "lucide-react";
 import { useTransition } from "react";
 import { deleteTransaction } from "../actions";
@@ -34,7 +33,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
       </div>
       <div className={styles.info}>
         <div className={styles.title}>{transaction.title}</div>
-        <div className={styles.date}>{format(new Date(transaction.date), "MMM d, yyyy")}</div>
+        <div className={styles.date}>{transaction.date}</div>
       </div>
       <div className={clsx(styles.amount, transaction.type === 'ASSET' ? styles.asset : styles.expense)}>
         {transaction.type === 'ASSET' ? '+' : '-'}₩{transaction.amount.toLocaleString()}
