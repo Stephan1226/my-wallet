@@ -13,7 +13,7 @@ interface Transaction {
   amount: number;
   category: string;
   type: string;
-  date: Date;
+  date: string;
 }
 
 export function TransactionItem({ transaction }: { transaction: Transaction }) {
@@ -34,7 +34,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
       </div>
       <div className={styles.info}>
         <div className={styles.title}>{transaction.title}</div>
-        <div className={styles.date}>{format(transaction.date, "MMM d, yyyy")}</div>
+        <div className={styles.date}>{format(new Date(transaction.date), "MMM d, yyyy")}</div>
       </div>
       <div className={clsx(styles.amount, transaction.type === 'ASSET' ? styles.asset : styles.expense)}>
         {transaction.type === 'ASSET' ? '+' : '-'}₩{transaction.amount.toLocaleString()}

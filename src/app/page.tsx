@@ -70,7 +70,7 @@ export default async function Home() {
         ) : (
           <div className="list">
             {transactions.map((t: { id: number; title: string; amount: number; category: string; type: string; date: Date }) => (
-              <TransactionItem key={t.id} transaction={t} />
+              <TransactionItem key={t.id} transaction={{ ...t, date: t.date.toISOString() }} />
             ))}
           </div>
         )}
