@@ -16,15 +16,16 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const transactions = await getTransactions();
-  const totalDebt = transactions.reduce((acc: number, t: { amount: number }) => acc + t.amount, 0);
   
-  const now = new Date();
-  const monthlyDebt = transactions
-    .filter((t: { date: Date }) => 
-      t.date.getMonth() === now.getMonth() && 
-      t.date.getFullYear() === now.getFullYear()
-    )
+  const totalAssets = transactions
+    .filter((t: { type: string; amount: number }) => t.type === "ASSET")
     .reduce((acc: number, t: { amount: number }) => acc + t.amount, 0);
+
+  const totalDebt = transactions
+    .filter((t: { type: string; amount: number }) => t.type === "EXPENSE")
+    .reduce((acc: number, t: { amount: number }) => acc + t.amount, 0);
+
+  const netMoney = totalAssets - totalDebt;
 
   return (
     <main className="container">
@@ -34,7 +35,7 @@ export default async function Home() {
         </h1>
       </header>
 
-      <DashboardStats totalDebt={totalDebt} monthlyDebt={monthlyDebt} />
+      <DashboardStats netMoney={netMoney} totalAssets={totalAssets} totalDebt={totalDebt} />
 
       <TransactionForm />
 
@@ -46,7 +47,7 @@ export default async function Home() {
           </p>
         ) : (
           <div className="list">
-            {transactions.map((t: { id: number; title: string; amount: number; category: string; date: Date }) => (
+            {transactions.map((t: { id: number; title: string; amount: number; category: string; type: string; date: Date }) => (
               <TransactionItem key={t.id} transaction={t} />
             ))}
           </div>

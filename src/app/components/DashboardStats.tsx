@@ -1,23 +1,31 @@
 import styles from "./DashboardStats.module.css";
 import { Card } from "./Card";
 
-export function DashboardStats({ totalDebt, monthlyDebt }: { totalDebt: number, monthlyDebt: number }) {
+export function DashboardStats({ netMoney, totalAssets, totalDebt }: { netMoney: number, totalAssets: number, totalDebt: number }) {
   return (
     <div className={styles.grid}>
       <Card className={styles.statsCard}>
-        <h3 className={styles.label}>총 그림자 부채</h3>
+        <h3 className={styles.label}>총 순자산 (Net Money)</h3>
         <div className={styles.amount}>
-          ₩{totalDebt.toLocaleString()}
+          ₩{netMoney.toLocaleString()}
         </div>
-        <p className={styles.subtext}>지금까지 쓴 내 돈 아닌 돈</p>
+        <p className={styles.subtext}>자산 - 그림자 부채</p>
+      </Card>
+
+      <Card className={styles.statsCard}>
+        <h3 className={styles.label}>총 자산</h3>
+        <div className={styles.amount} style={{ color: "var(--color-secondary)" }}>
+          ₩{totalAssets.toLocaleString()}
+        </div>
+        <p className={styles.subtext}>보유 현금 및 자산</p>
       </Card>
       
       <Card className={styles.statsCard}>
-        <h3 className={styles.label}>이번 달 지출</h3>
-        <div className={styles.amount} style={{ color: "var(--color-secondary)" }}>
-          ₩{monthlyDebt.toLocaleString()}
+        <h3 className={styles.label}>총 그림자 부채</h3>
+        <div className={styles.amount} style={{ color: "var(--color-danger)" }}>
+          ₩{totalDebt.toLocaleString()}
         </div>
-        <p className={styles.subtext}>{new Date().getMonth() + 1}월 사용 금액</p>
+        <p className={styles.subtext}>지금까지 쓴 내 돈 아닌 돈</p>
       </Card>
     </div>
   );

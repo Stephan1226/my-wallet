@@ -22,6 +22,17 @@ export function TransactionForm() {
     <Card className={styles.container}>
       <h2 className={styles.title}>지출 기록하기</h2>
       <form ref={formRef} action={action} className={styles.form}>
+        <div className={styles.typeSelector}>
+          <label className={styles.radioLabel}>
+            <input type="radio" name="type" value="EXPENSE" defaultChecked />
+            <span className={styles.radioText}>지출 (부채)</span>
+          </label>
+          <label className={styles.radioLabel}>
+            <input type="radio" name="type" value="ASSET" />
+            <span className={styles.radioText}>자산 추가</span>
+          </label>
+        </div>
+        
         <Input 
           name="title" 
           label="내용" 

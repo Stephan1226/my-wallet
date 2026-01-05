@@ -12,6 +12,7 @@ interface Transaction {
   title: string;
   amount: number;
   category: string;
+  type: string;
   date: Date;
 }
 
@@ -35,8 +36,8 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
         <div className={styles.title}>{transaction.title}</div>
         <div className={styles.date}>{format(transaction.date, "MMM d, yyyy")}</div>
       </div>
-      <div className={styles.amount}>
-        -₩{transaction.amount.toLocaleString()}
+      <div className={clsx(styles.amount, transaction.type === 'ASSET' ? styles.asset : styles.expense)}>
+        {transaction.type === 'ASSET' ? '+' : '-'}₩{transaction.amount.toLocaleString()}
       </div>
       <button 
         onClick={handleDelete} 

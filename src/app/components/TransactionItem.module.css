@@ -48,9 +48,16 @@
 
 .amount {
   font-weight: 600;
-  color: var(--color-danger);
   /* Debt is red/danger usually, or maybe white in this dark theme? Let's use danger/red to signify debt */
   margin-right: 16px;
+}
+
+.expense {
+  color: var(--color-danger);
+}
+
+.asset {
+  color: var(--color-secondary);
 }
 
 .deleteBtn {

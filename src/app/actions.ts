@@ -7,6 +7,7 @@ export async function addTransaction(formData: FormData) {
   const title = formData.get("title") as string;
   const amount = parseFloat(formData.get("amount") as string);
   const category = formData.get("category") as string;
+  const type = (formData.get("type") as string) || "EXPENSE";
 
   if (!title || !amount || !category) {
     throw new Error("Missing required fields");
@@ -17,6 +18,7 @@ export async function addTransaction(formData: FormData) {
       title,
       amount,
       category,
+      type,
       date: new Date(),
     },
   });

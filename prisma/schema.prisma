@@ -12,6 +12,7 @@ model Transaction {
   amount    Float
   title     String
   category  String
+  type      String   @default("EXPENSE") // EXPENSE or ASSET
   date      DateTime @default(now())
   isPaidOff Boolean  @default(false)
   
