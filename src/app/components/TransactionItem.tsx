@@ -19,7 +19,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
-    if (confirm("Are you sure you want to delete this record?")) {
+    if (confirm("정말 이 내역을 삭제하시겠습니까?")) {
       startTransition(async () => {
         await deleteTransaction(transaction.id);
       });

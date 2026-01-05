@@ -39,14 +39,14 @@ export default async function Home() {
       <TransactionForm />
 
       <section style={{ marginTop: "40px" }}>
-        <h2 style={{ marginBottom: "20px", fontSize: "1.25rem" }}>Recent History</h2>
+        <h2 style={{ marginBottom: "20px", fontSize: "1.25rem" }}>최근 내역</h2>
         {transactions.length === 0 ? (
           <p className="text-muted" style={{ textAlign: "center", padding: "40px" }}>
-            No records yet. Start tracking your shadow spending.
+            아직 기록된 내역이 없습니다.
           </p>
         ) : (
           <div className="list">
-            {transactions.map((t) => (
+            {transactions.map((t: { id: number; title: string; amount: number; category: string; date: Date }) => (
               <TransactionItem key={t.id} transaction={t} />
             ))}
           </div>

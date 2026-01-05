@@ -5,19 +5,19 @@ export function DashboardStats({ totalDebt, monthlyDebt }: { totalDebt: number, 
   return (
     <div className={styles.grid}>
       <Card className={styles.statsCard}>
-        <h3 className={styles.label}>Total Shadow Debt</h3>
+        <h3 className={styles.label}>총 그림자 부채</h3>
         <div className={styles.amount}>
           ₩{totalDebt.toLocaleString()}
         </div>
-        <p className={styles.subtext}>Total tracked since beginning</p>
+        <p className={styles.subtext}>지금까지 쓴 내 돈 아닌 돈</p>
       </Card>
       
       <Card className={styles.statsCard}>
-        <h3 className={styles.label}>This Month</h3>
+        <h3 className={styles.label}>이번 달 지출</h3>
         <div className={styles.amount} style={{ color: "var(--color-secondary)" }}>
           ₩{monthlyDebt.toLocaleString()}
         </div>
-        <p className={styles.subtext}>Added in {new Date().toLocaleString('default', { month: 'long' })}</p>
+        <p className={styles.subtext}>{new Date().getMonth() + 1}월 사용 금액</p>
       </Card>
     </div>
   );
